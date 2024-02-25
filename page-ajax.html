@@ -23,8 +23,9 @@
 
     <main class="grid grid-cols-1 2xl:grid-cols-2 gap-3 mb-56">
         <section>
-            <h2 class="text-2xl">save - Create</h2>
-            <pre>
+            <h1>save - Create</h1>
+            <div>
+                <pre>
 <code>
     function saveCategory() {
         if (!$("#formId").validationEngine('validate')) {
@@ -53,13 +54,15 @@
         return false;
     }
 </code>
-            </pre>
+                </pre>
+            </div>
 
         </section>
 
         <section>
-            <h2 class="text-2xl">show - Read</h2>
-            <pre>
+            <h1>show - Read</h1>
+            <div>
+                <pre>
 <code>
     function onCategoryChange() {
         _categoryId = $('#categoryId').val();
@@ -80,13 +83,15 @@
         });
     }
 </code>
-            </pre>
+                </pre>
+            </div>
 
         </section>
 
         <section>
-            <h2 class="text-2xl">update - Update</h2>
-            <pre>
+            <h1>update - Update</h1>
+            <div>
+                <pre>
 <code>
     function updateCategory() {
         if (!$("#formId").validationEngine('validate')) {
@@ -133,13 +138,15 @@
         return false;
     }
 </code>
-            </pre>
+                </pre>
+            </div>
 
         </section>
 
         <section>
-            <h2 class="text-2xl">delete - Delete</h2>
-            <pre>
+            <h1>delete - Delete</h1>
+            <div>
+                <pre>
 <code>
     function deleteCategory() {
         if (!$("#formId").validationEngine('validate')) {
@@ -185,7 +192,8 @@
         return false;
     }
 </code>
-            </pre>
+                </pre>
+            </div>
 
         </section>
     </main>

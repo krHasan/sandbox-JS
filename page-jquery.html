@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS SandBox | jQuery</title>
+    <script src="jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="index.css">
+    <script>
+        const pageName = 'jquery';
+    </script>
+    <script src="index.js"></script>
+
+</head>
+
+<body class="container mx-auto">
+    <header>
+        <div id="menuContainer"></div>
+    </header>
+
+    <main class="grid grid-cols-1 xl:grid-cols-2 gap-3 mb-56">
+        <!-- Disabled -->
+        <section>
+            <h1>Disabled</h1>
+            <h3>jQuery 1.6+</h3>
+            <p>To change the disabled property you should use the .prop() function.</p>
+            <div>
+                <pre>
+<code>
+    $('input').prop('disabled', true);
+    $('input').prop('disabled', false);
+</code>
+                </pre>
+            </div>
+
+            <h3>jQuery 1.5 and below</h3>
+            <p>The .prop() function doesn't exist, but .attr() does similar:</p>
+            <h5>Set the disabled attribute.</h5>
+            <div>
+                <pre>
+<code>
+    $('input').attr('disabled','disabled');
+</code>
+                </pre>
+            </div>
+
+            <h5>To enable again, the proper method is to use .removeAttr()</h5>
+            <div>
+                <pre>
+<code>
+    $('input').removeAttr('disabled');
+</code>
+                </pre>
+            </div>
+        </section>
+
+        <!-- Radio Button -->
+        <section>
+            <h1>Radio Button</h1>
+            <h5>.change()</h5>
+            <div>
+                <pre>
+<code>
+    $('input[type=radio][name=bedStatus]').change(function() {
+
+    });
+</code>
+                </pre>
+            </div>
+
+            <h5>Get selected radio button value</h5>
+            <div>
+                <pre>
+<code>
+    $('input[name="name_of_your_radiobutton"]:checked').val();
+</code>
+                </pre>
+            </div>
+        </section>
+    </main>
+</body>
+
+</html>
