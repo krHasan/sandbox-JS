@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS SandBox | Validation</title>
+    <link rel="icon" type="image/x-icon" href="./title-icon.png">
+    <script src="jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="index.css">
+    <script>
+        const pageName = 'validation';
+    </script>
+    <script src="index.js"></script>
+</head>
+
+<body class="container mx-auto">
+    <header>
+        <div id="menuContainer"></div>
+    </header>
+
+    <main class="grid grid-cols-1 2xl:grid-cols-2 gap-3 mb-56">
+        <!-- Input Number Only -->
+        <section>
+            <h1>Input Number Only</h1>
+            <p>Make a input field to take only number value</p>
+            <div class="badge badge-accent mt-2">Declaration</div>
+            <div>
+                <pre>
+<code>
+    $("." + className).inputFilter(function(value) {
+        return /^\d*$/.test(value);    // Allow digits only, using a RegExp
+    });
+</code>
+                </pre>
+            </div>
+
+            <div class="badge badge-accent mt-2">How to use</div>
+            <div class="indicator w-full">
+                <span class="indicator-item indicator-center badge badge-primary">JS</span>
+                <div class="w-full">
+                    <pre>
+<code>
+    $(document).ready(function () {
+        numberOnlyInputByClass('numberOnlyClass');
+    });
+</code>
+                    </pre>
+                </div>
+            </div>
+            <div class="indicator w-full">
+                <span class="indicator-item indicator-center badge badge-primary">GSP</span>
+                <div class="w-full">
+                    <pre>
+<code>
+    %{--Original Price--}%
+    < tmpl:/components/input/textField-3 
+    validationClass="validate[required, custom[onlyLetterNumber]] numberOnlyClass" />
+</code>
+                    </pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Input Decimal Number Only -->
+        <section>
+            <h1>Input Decimal Number Only</h1>
+            <p>Make a input field to take only decimal number value</p>
+            <div class="badge badge-accent mt-2">Declaration</div>
+            <div>
+                <pre>
+<code>
+    function setDecimalField(inputFieldClass) {
+		$("." + inputFieldClass).inputFilter(function(value) {
+		    return /^[0-9]*\.?[0-9]*$/.test(value);
+		});
+	}
+</code>
+                </pre>
+            </div>
+
+            <div class="badge badge-accent mt-2">How to use</div>
+            <div class="indicator w-full">
+                <span class="indicator-item indicator-center badge badge-primary">JS</span>
+                <div class="w-full">
+                    <pre>
+<code>
+    $(document).ready(function () {
+        setDecimalField('setDecimalField');
+    });
+</code>
+                    </pre>
+                </div>
+            </div>
+            <div class="indicator w-full">
+                <span class="indicator-item indicator-center badge badge-primary">GSP</span>
+                <div class="w-full">
+                    <pre>
+<code>
+    use 'setDecimalField' this class name to class list
+</code>
+                    </pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Precision Two in Decimal Number -->
+        <section>
+            <h1>Precision Two in Decimal Number</h1>
+            <div class="badge badge-accent mt-2">Declaration</div>
+            <div>
+                <pre>
+<code>
+    function toFixedPrecisionTwo(id) {
+        let toFixedPrecisionTwoValue = $("#" + id).val();
+        if (toFixedPrecisionTwoValue != "" && toFixedPrecisionTwoValue != null 
+                                        && toFixedPrecisionTwoValue != undefined) {
+            toFixedPrecisionTwoValue = parseFloat(toFixedPrecisionTwoValue);
+            $("#" + id).val(toFixedPrecisionTwoValue.toFixed(2));
+        }
+    }
+</code>
+                </pre>
+            </div>
+            <div class="badge badge-accent mt-2">How to use</div>
+            <div>
+                <pre>
+<code>
+    $(document).ready(function () {
+        $("#id").blur(function () {
+            toFixedPrecisionTwo('id');
+        });
+    });
+</code>
+                </pre>
+            </div>
+        </section>
+
+        <!-- Add Comma in currency value -->
+        <section>
+            <h1>Add Comma (,) in currency value</h1>
+            <p>You can add comma in a number in below ways</p>
+            <h2>By declaring a function</h2>
+            <div class="badge badge-accent mt-2">Declaration</div>
+            <div>
+                <pre>
+<code>
+    function numberAndCommaOnlyInputByClass(className) {
+        $("." + className).inputFilter(function(value) {
+            // Allow digits and comma only, using a RegExp
+            return /^[0-9,]+$/g.test(value);    
+        });
+    }
+</code>
+                </pre>
+            </div>
+            <div class="badge badge-accent mt-2">How to use</div>
+            <h5>Initialize in document ready</h5>
+            <div>
+                <pre>
+<code>
+    $(document).ready(function () {
+        numberAndCommaOnlyInputByClass('numberAndCommaOnly');
+    });
+</code>
+                </pre>
+            </div>
+            <h5>Then use a class name in html elements</h5>
+            <div>
+                <pre>
+<code>
+    class="numberAndCommaOnly"
+</code>
+                </pre>
+            </div>
+
+            <h2>Use JavaScript native support</h2>
+            <div>
+                <pre>
+<code>
+    $("#totalAmount").val(_totalAmount.toLocaleString());
+</code>
+                </pre>
+            </div>
+        </section>
+    </main>
+</body>
+
+</html>

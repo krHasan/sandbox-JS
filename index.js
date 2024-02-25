@@ -12,16 +12,17 @@ $(document).ready(function () {
 
             // #015493 light blue
             let lightBlueArray = ['return', 'if', 'else', 'const', 'let', 'var', 'while', 'new', 'async',
-                'try', 'await', 'catch', 'success', 'data', 'type', 'dataType', 'name'];
+                'try', 'await', 'catch', 'success', 'data', 'type', 'dataType', 'name', 'id', 'document', 'undefined',
+                'null', 'class'];
             lightBlueArray.forEach(element => {
                 text = text.replace(new RegExp("\\b" + element + "\\b", "gi"), '<span style="color: #015493">$&</span>');
             });
 
             // #C16D27 orange
             let orangeArray = ['false', 'true', 'require', 'Promise', 'setTimeout', 'resolve', 'get', 'JSON',
-                'stringify', 'null', 'log', 'ajax', 'then', 'XMLHttpRequest', 'done', 'catch',
+                'stringify', 'log', 'ajax', 'then', 'XMLHttpRequest', 'done', 'catch',
                 'fail', 'val', 'serialize', 'reload', 'jqXHR', 'errorThrown', 'slice', 'this', 'prop',
-                'attr', 'removeAttr', 'change'];
+                'attr', 'removeAttr', 'change', 'ready', 'blur', 'toFixed', 'parseFloat', 'inputFilter', 'test'];
             orangeArray.forEach(element => {
                 text = text.replace(new RegExp("\\b" + element + "\\b", "gi"), '<span style="color: #C16D27">$&</span>');
             })
