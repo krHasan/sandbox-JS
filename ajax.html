@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS SandBox | Ajax</title>
+    <script src="jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="index.css">
+    <script>
+        const pageName = 'ajax';
+    </script>
+    <script src="index.js"></script>
+
+</head>
+
+<body class="container mx-auto">
+    <header>
+        <div id="menuContainer"></div>
+    </header>
+
+    <main class="grid grid-cols-1 2xl:grid-cols-2 gap-3 mb-56">
+        <section>
+            <h2 class="text-2xl">save - Create</h2>
+            <pre>
+<code>
+    function saveCategory() {
+        if (!$("#formId").validationEngine('validate')) {
+            return false;
+        }
+
+        let url = '/${params.controller}/save';
+
+        SubmissionLoader.showTo()
+        $.ajax({
+            type: 'POST',
+            data: $("#formId").serialize(),
+            url: url,
+            dataType: 'json',
+            success: function (data, textStatus) {
+                SubmissionLoader.hideFrom();
+                MessageRenderer.render(data);
+                table.ajax.reload();
+                cancelCategory();
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            },
+            complete: function () {
+            }
+        })
+        return false;
+    }
+</code>
+            </pre>
+
+        </section>
+
+        <section>
+            <h2 class="text-2xl">show - Read</h2>
+            <pre>
+<code>
+    function onCategoryChange() {
+        _categoryId = $('#categoryId').val();
+        $.ajax({
+            url: '/${params.controller}/getSubCategoryByCategoryId',
+            type: 'post',
+            data: {categoryId: _categoryId}
+        }).done(function (json) {
+            let tableReference = $('#tableId').dataTable();
+            oSettings = tableReference.fnSettings();
+            tableReference.fnClearTable(this);
+            for (var i = 0; i < json.aaData.length; i++) {
+                tableReference.oApi._fnAddData(oSettings, json.aaData[i]);
+            }
+            oSettings.aiDisplay = oSettings.aiDisplayMaster.slice();
+            tableReference.fnDraw();
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+        });
+    }
+</code>
+            </pre>
+
+        </section>
+
+        <section>
+            <h2 class="text-2xl">update - Update</h2>
+            <pre>
+<code>
+    function updateCategory() {
+        if (!$("#formId").validationEngine('validate')) {
+            return false;
+        }
+
+        let url = '/${params.controller}/update';
+
+        $('#dialog').dialog('destroy');
+        $('#dialogId').dialog({
+            resizable: true,
+            height: 200,
+            width: 600,
+            modal: true,
+            title: 'Confirmation',
+            buttons: {
+                Update: function () {
+                    $(this).dialog('close');
+                    SubmissionLoader.showTo()
+                    $.ajax({
+                        type: 'PUT',
+                        data: $('#formId').serialize(),
+                        url: url,
+                        dataType: 'json',
+                        success: function (data, textStatus) {
+                            SubmissionLoader.hideFrom();
+                            MessageRenderer.render(data);
+                            cancelCategory();
+                            table.ajax.reload();
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        },
+                        complete: function () {
+                        }
+                    })
+                },
+                Cancel: function () {
+                    $(this).dialog('close');
+                    cancelCategory();
+                }
+            }
+        });
+
+        return false;
+    }
+</code>
+            </pre>
+
+        </section>
+
+        <section>
+            <h2 class="text-2xl">delete - Delete</h2>
+            <pre>
+<code>
+    function deleteCategory() {
+        if (!$("#formId").validationEngine('validate')) {
+            return false;
+        }
+
+        let url = '/${params.controller}/delete';
+
+        $('#dialog').dialog('destroy');
+        $('#dialogId').dialog({
+            resizable: true,
+            height: 200,
+            width: 600,
+            modal: true,
+            title: 'Confirmation',
+            buttons: {
+                Delete: function () {
+                    $(this).dialog('close');
+                    SubmissionLoader.showTo()
+                    $.ajax({
+                        type: 'DELETE',
+                        url: url + '?' + $.param({"id": $('#id').val()}),
+                        dataType: 'json',
+                        success: function (data, textStatus) {
+                            SubmissionLoader.hideFrom();
+                            MessageRenderer.render(data);
+                            cancelCategory();
+                            table.ajax.reload();
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        },
+                        complete: function () {
+                        }
+                    })
+                },
+                Cancel: function () {
+                    $(this).dialog('close');
+                    cancelCategory();
+                }
+            }
+        });
+
+        return false;
+    }
+</code>
+            </pre>
+
+        </section>
+    </main>
+</body>
+
+</html>
