@@ -20,7 +20,7 @@ $(document).ready(function () {
 
             // #C16D27 orange
             let orangeArray = ['false', 'true', 'require', 'Promise', 'setTimeout', 'resolve', 'get', 'JSON',
-                'stringify', 'log', 'ajax', 'then', 'XMLHttpRequest', 'done', 'catch',
+                'stringify', 'log', 'ajax', 'then', 'XMLHttpRequest', 'done', 'catch', 'toLocaleString',
                 'fail', 'val', 'serialize', 'reload', 'jqXHR', 'errorThrown', 'slice', 'this', 'prop',
                 'attr', 'removeAttr', 'change', 'ready', 'blur', 'toFixed', 'parseFloat', 'inputFilter', 'test'];
             orangeArray.forEach(element => {

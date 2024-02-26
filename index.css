@@ -2,6 +2,7 @@ div pre {
     background-color: #F6F6F6;
     margin: 5px 10px 20px 0;
     border-radius: 5px;
+    overflow-x: auto;
 }
 
 h1 {
