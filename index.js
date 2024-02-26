@@ -13,7 +13,7 @@ $(document).ready(function () {
             // #015493 light blue
             let lightBlueArray = ['return', 'if', 'else', 'const', 'let', 'var', 'while', 'new', 'async',
                 'try', 'await', 'catch', 'success', 'data', 'type', 'dataType', 'name', 'id', 'document', 'undefined',
-                'null', 'class'];
+                'null', 'class', 'table', 'label', 'input', 'tmpl', 'div'];
             lightBlueArray.forEach(element => {
                 text = text.replace(new RegExp("\\b" + element + "\\b", "gi"), '<span style="color: #015493">$&</span>');
             });

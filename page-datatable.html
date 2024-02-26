@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS SandBox | DataTable</title>
+    <link rel="icon" type="image/x-icon" href="./title-icon.png">
+    <script src="jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="index.css">
+    <script>
+        const pageName = 'dataTable';
+    </script>
+    <script src="index.js"></script>
+</head>
+
+<body class="container mx-auto">
+    <header>
+        <div id="menuContainer"></div>
+    </header>
+
+    <main class="mb-56">
+        <section>
+            <a href="https://datatables.net/examples/index" target="_blank" class="btn-link">Examples</a> <br>
+            <a href="https://datatables.net/reference/option/" target="_blank" class="btn-link">Options</a> <br>
+            <a href="https://datatables.net/blog/2014-12-18" target="_blank" class="btn-link">Ultimate date / time
+                sorting</a>
+        </section>
+
+        <!-- Adding sources -->
+        <section>
+            <h1>Adding sources (bootstrap4, Ajax)</h1>
+            <div>
+                <pre>
+<code>
+    < asset:stylesheet src="DataTables/DataTables-1.10.21/css/jquery.dataTables.min.css"/>
+    < asset:stylesheet src="DataTables/DataTables-1.10.21/css/dataTables.bootstrap4.min.css"/>
+    
+    < asset:javascript src="DataTables/datatables.min.js"/>
+    < asset:javascript src="DataTables/DataTables-1.10.21/js/jquery.dataTables.min.js"/>
+    < asset:javascript src="DataTables/DataTables-1.10.21/js/dataTables.bootstrap4.min.js"/> 
+</code>
+                </pre>
+            </div>
+        </section>
+
+        <!-- In Controller -->
+        <section>
+            <h1>In Controller</h1>
+            <div>
+                <pre>
+<code>
+    def getAllCategoryList() {
+        render categoryService.getAllCategoryList() as JSON
+    }
+</code>
+                </pre>
+            </div>
+        </section>
+
+        <!-- In Service -->
+        <section>
+            <h1>In Service</h1>
+            <div>
+                <pre>
+<code>
+    Map getAllCategoryList() {
+        Map map = [:]
+        String sql = """
+            SELECT  '' as 'sl',
+                    a.id AS 'id',
+                    a.category_name AS 'categoryName',
+                    a.description AS 'description',
+                    a.domain_status AS 'status'
+            FROM category a
+        """
+        List< GroovyRowResult> resultList = new Sql(dataSource).rows(sql)
+        map.put("aaData", resultList)
+        return map
+    }
+</code>
+                </pre>
+            </div>
+        </section>
+
+        <!-- HTML -->
+        <section>
+            <div>
+                <pre>
+<code>
+    < tmpl:/components/heading/table-header title="First Category List" />
+    < table id="tableId" class="display nowrap table table-striped table-bordered" width="100%"> %{--style="width:100%"--}%
+        < thead>
+            < tr>
+                < th>SL< />
+                < th>ID< />
+                < th>Category Name< />
+                < th>Description< />
+                < th>Status< />
+            < /tr>
+        < /thead>
+    < /table>
+%{-- < table id="tableId" class="table table-striped table-bordered" style="width:100%"> --}%
+</code>
+                </pre>
+            </div>
+        </section>
+
+        <!-- JS -->
+        <section>
+            <h1>JS</h1>
+            <div>
+                <pre>
+<code>
+    let table = null;
+
+    $(document).ready(function () {
+        initializeTable();
+    });
+    
+    function initializeTable() {
+        table = $('#tableId').DataTable({
+            "ajax": "/${params.controller}/getProductList?" + $('#formId').serialize(),
+            "data": [],
+            "paging": true,
+            "ordering": true,
+            "info": true,
+            "order": [[1, "asc"]], //value: desc. column index
+            "scrollX": true,
+            // "scrollY": "200px",
+            "scrollCollapse": true,
+            "stateSave": true,
+            "autoWidth": true, //default value true
+            "fixedHeader": true,
+            "bInfo" : false,
+            "scrollResize": true,
+            "lengthChange": true, //10, 25, 50, 100
+            "searching": true, //show/hide search box
+            "pagingType": "full_numbers", //numbers | simple | simple_numbers | full | full_numbers | first_last_numbers
+            "columns": [
+                {"data": "sl", "name": "sl", "visible": true, "searchable": false, "width": "5%", "orderable": false},
+                {"data": "id", "name": "id", "visible": false, "searchable": false, "width": null, "orderable": false},
+                {"data": "categoryName", "name": "categoryName", "visible": true, "searchable": true, "width": null, "orderable": true },
+                {"data": "description", "name": "description", "visible": true, "searchable": true, "width": null, "orderable": true },
+                {"data": "status", "name": "status", "visible": true, "searchable": true, "width": null, "orderable": true },
+            ],
+            //count index of columns
+            "columnDefs": [
+                {//add onclick event to a column
+                    "targets": [0],//sl
+                    "render": function (data, type, row, full) {
+                        const rowIndex = full.row
+                        return '< a href="javascript:void(0)" onclick="editProduct(' + rowIndex + ')" style="text-decoration: underline; color: inherit"> edit < /a>';
+                    }
+                },
+                {//add onclick event to a column
+                    "targets": [2], //categoryName
+                    // className: "activeClass",
+                    "render": function (data, type, row) {
+                        return '< a href="javascript:edit(' + row.id + ')" style="text-decoration: underline; color: inherit">' + data + '< /a>';
+                    }
+                },
+                {//change value of a column based on condition
+                    "targets": [4], //status
+                    "className": "activeClass",
+                    "render": function (data, type, row) {
+                        if (data == '${CommonConstants.DOMAIN_STATUS_ACTIVE}') {
+                            return 'Active'
+                        } else if (data == '${CommonConstants.DOMAIN_STATUS_INACTIVE}') {
+                            return 'Inactive'
+                        } else {
+                            return ''
+                        }
+                    }
+                },
+                {//control date format
+                    "targets": 1, //sellingDate
+                    "render": function(data, type, row, meta) {
+                        return moment(data).format('DD-MM-YYYY HH:mm');
+                    }
+                },
+                {//add thousand separator
+                    "targets": 4, //totalPayable
+                    "render": function(data, type, row, meta) {
+                        return data.toLocaleString();
+                    }
+                },
+                {//add onclick event to a column with 2 params
+                        "targets": [5],//proposalNo
+                        "render": function (data, type, row, full) {
+                            return "< a style='text-decoration: underline;' href='javascript:void(0)' onclick='ProcessSearchEditor.showProposal(" + "\"" + row.refProposalId + "\"" + ",\"" + row.refProposalName + "\"" + ")'>" + data + "< /a>"
+                        }
+                    }
+            ],
+            //count index of visible columns
+            "createdRow": function (row, data, index) {
+                if (data.status == '${CommonConstants.DOMAIN_STATUS_ACTIVE}') {
+                    $('td', row).eq(3).addClass('activeClass');
+                } else {
+                    $('td', row).addClass('inactiveClass');
+                }
+            }
+        });
+
+        //add SL at 0 column index
+        table.on('order.dt search.dt', function () {
+            table.column(0, {search: 'applied', order: 'applied'}).nodes().each(function (cell, i) {
+                cell.innerHTML = i + 1;
+            });
+        }).draw();
+
+        //for edit, delete, select data
+        $('#tableId tbody').on('click', 'tr', function () {
+            var data = table.row(this).data();
+            edit(data);
+        });
+    }
+</code>
+                </pre>
+            </div>
+        </section>
+
+        <!-- Insert Data Later -->
+        <section>
+            <h1>Insert Data Later</h1>
+            <div>
+                <pre>
+<code>
+    * comment "ajax": "",
+
+    function onCategoryChange() {
+    	SubmissionLoader.showTo();
+        _categoryId = $('#categoryId').val();
+        $.ajax({
+            url: "/${params.controller}/getSubCategoryByCategoryId",
+            type: "post",
+            data: {categoryId: _categoryId}
+        }).done(function (json) {
+        	SubmissionLoader.hideFrom();
+            let tableReference = $('#tableId').dataTable();
+            oSettings = tableReference.fnSettings();
+            tableReference.fnClearTable(this);
+            for (var i = 0; i < json.aaData.length; i++) {
+                tableReference.oApi._fnAddData(oSettings, json.aaData[i]);
+            }
+            oSettings.aiDisplay = oSettings.aiDisplayMaster.slice();
+            tableReference.fnDraw();
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+        	SubmissionLoader.showTo();
+        });
+    }
+
+	OR	(with a message)
+
+    function searchForProductList() {
+        SubmissionLoader.showTo();
+        $.ajax({
+            url: "/${params.controller}/getProductList",
+            type: "POST",
+            data: $("#formId").serialize()
+        }).done(function (json) {
+            SubmissionLoader.hideFrom();
+            if(json.aaData.length == 0) {
+                MessageRenderer.render({messageTitle: "No Data", messageBody: "No data found to show", type: "2"});
+            }
+            let tableReference = $('#tableId').dataTable();
+            oSettings = tableReference.fnSettings();
+            tableReference.fnClearTable(this);
+            for (var i = 0; i < json.aaData.length; i++) {
+                tableReference.oApi._fnAddData(oSettings, json.aaData[i]);
+            }
+            oSettings.aiDisplay = oSettings.aiDisplayMaster.slice();
+            tableReference.fnDraw();
+
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+        	SubmissionLoader.hideFrom();
+        });
+    }
+</code>
+                </pre>
+            </div>
+        </section>
+
+        <!-- Features -->
+        <section>
+            <h1>Features</h1>
+            <h5>refresh table if data comes from ajax</h5>
+            <div>
+                <pre>
+<code>
+    table.ajax.reload();
+</code>
+                </pre>
+            </div>
+
+            <h5>refresh dataTable without ajax</h5>
+            <div>
+                <pre>
+<code>
+    let tableReference = $('#tableId').dataTable();
+    oSettings = tableReference.fnSettings();
+    tableReference.fnClearTable(this);
+</code>
+                </pre>
+            </div>
+        </section>
+
+
+        <!-- CSS -->
+        <section>
+            <h1>CSS</h1>
+            <div>
+                <pre>
+<code>
+    /*table's cell data color*/
+    td.activeClass {
+        color: green;
+    }
+    td.inactiveClass {
+        color: red;
+    }
+</code>
+                </pre>
+            </div>
+        </section>
+
+
+        <!-- Need to initialize dataTable multiple times -->
+        <section>
+            <h1>Need to initialize dataTable multiple times</h1>
+            <a href="https://datatables.net/manual/tech-notes/3" target="_blank" class="btn-link">Warning: Cannot reinitialise Da..</a>
+            <h5>check dataTable has been already initialized or not</h5>
+            <div>
+                <pre>
+<code>
+    if ( $.fn.dataTable.isDataTable( '#tableIdCustomer' ) ) {
+        onMobileNumberChange();//if true then laod ajax call only
+    } else {
+        initializePurchaserTable();//if not then initialize with ajax calling
+    }
+</code>
+                </pre>
+            </div>
+        </section>
+
+
+        <!-- Show/Hide Columns using checkbox -->
+        <section>
+            <h1>Show/Hide Columns using checkbox</h1>
+            <p>after the table-header</p>
+            <div class="badge badge-accent mt-2">GSP</div>
+            <div>
+                <pre>
+<code>
+    < tmpl:/components/heading/table-header title="Product List" />
+    < div class="row">
+        < div class="col-12 my-2">
+            < label for="column_0" class="mr-2 mouseHand">< input id="column_0" type="checkbox" class="toggle-dataTable-column mr-1" data-column="0">Edit< /label>
+            < input id="column_1" type="checkbox" style="display: none" class="toggle-dataTable-column mr-1" data-column="1">
+            < label for="column_2" class="mr-2 mouseHand">< input id="column_2" type="checkbox" class="toggle-dataTable-column mr-1" data-column="2">Product Name< /label>
+            < label for="column_3" class="mr-2 mouseHand">< input id="column_3" type="checkbox" class="toggle-dataTable-column mr-1" data-column="3">Shop Name< /label>
+            < label for="column_4" class="mr-2 mouseHand">< input id="column_4" type="checkbox" class="toggle-dataTable-column mr-1" data-column="4">Original Price< /label>
+            < label for="column_5" class="mr-2 mouseHand">< input id="column_5" type="checkbox" class="toggle-dataTable-column mr-1" data-column="5">Selling Price< /label>
+            < label for="column_6" class="mr-2 mouseHand">< input id="column_6" type="checkbox" class="toggle-dataTable-column mr-1" data-column="6">Quantity< /label>
+            < label for="column_7" class="mr-2 mouseHand">< input id="column_7" type="checkbox" class="toggle-dataTable-column mr-1" data-column="7">Product Code< /label>
+            < label for="column_8" class="mr-2 mouseHand">< input id="column_8" type="checkbox" class="toggle-dataTable-column mr-1" data-column="8">Category< /label>
+            < label for="column_9" class="mr-2 mouseHand">< input id="column_9" type="checkbox" class="toggle-dataTable-column mr-1" data-column="9">Sub Category< /label>
+            < label for="column_10" class="mr-2 mouseHand">< input id="column_10" type="checkbox" class="toggle-dataTable-column mr-1" data-column="10">Status< /label>
+        < /div>
+    < /div>
+    < table id="tableId" class="table table-striped table-bordered" style="width:100%">
+</code>
+                </pre>
+            </div>
+
+            <div class="badge badge-accent mt-2">JS</div>
+            <div>
+                <pre>
+<code>
+    $(document).ready(function () {
+        $('.toggle-dataTable-column').on( 'click', function (e) {
+            // e.preventDefault();
+
+            // Get the column API object
+            let column = table.column( $(this).attr('data-column') );
+
+            // Toggle the visibility
+            column.visible( ! column.visible() );
+        } );
+
+        let x = document.getElementsByClassName("toggle-dataTable-column");
+        for (let i = 0; i < x.length; i++) {
+            const columnVisibility = table.column( $("#" + x[i].id).attr('data-column')).visible();
+            $("#" + x[i].id).attr('checked', columnVisibility);
+        }
+    });
+
+
+
+    * "stateSave": true,
+</code>
+                </pre>
+            </div>
+
+            <div class="badge badge-accent mt-2">CSS</div>
+            <div>
+                <pre>
+<code>
+    .mouseHand {
+        cursor: pointer;
+    }
+</code>
+                </pre>
+            </div>
+        </section>
+
+    </main>
+</body>
+
+</html>
