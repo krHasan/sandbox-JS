@@ -81,6 +81,46 @@
                 </pre>
             </div>
         </section>
+
+        <!-- Anonymous Function in jquery  -->
+        <section>
+            <h1>Anonymous Function in jquery</h1>
+            <div id="anonymous_div" style="cursor: pointer;">
+                click me!!!
+            </div>
+            <script>
+                (function ($) {
+                    $("#anonymous_div").click(function () {
+                        write();
+                    });
+                })(jQuery);
+
+                function write() {
+                    alert("2nd function");
+                }
+            </script>
+            <div>
+                <pre>
+<code>
+    //type 1
+    $(function () {
+        alert('1st Function is running right after the browser is loaded');
+    });
+
+    //type 2
+    (function ($) {
+        $('#anonymous_div').click(function () { 
+            write(); 
+        });
+    })(jQuery);
+    
+    function write() {
+        alert("2nd function");
+    }
+</code>
+                </pre>
+            </div>
+        </section>
     </main>
 </body>
 

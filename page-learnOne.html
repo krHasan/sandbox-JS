@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS SandBox | Learn 1</title>
+    <link rel="icon" type="image/x-icon" href="./title-icon.png">
+    <script src="jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="index.css">
+    <script>
+        const pageName = 'learnOne';
+    </script>
+    <script src="index.js"></script>
+</head>
+
+<body class="container mx-auto">
+    <header>
+        <div id="menuContainer"></div>
+    </header>
+
+    <main class="grid grid-cols-1 2xl:grid-cols-2 gap-3 mb-56">
+        <!-- Add a library at console -->
+        <section>
+            <h1>Add a library at console</h1>
+            <p>If you're on a webpage that you can't modify directly and wish to use html2pdf.js to capture a screenshot, you can follow these steps:</p>
+            <p>Open your browser's console</p>
+            <h5>Paste this code</h5>
+            <div>
+                <pre>
+<code>
+    function addScript(url) {
+        var script = document.createElement('script');
+        script.type = 'application/javascript';
+        script.src = url;
+        document.head.appendChild(script);
+    }
+    addScript('https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js');
+</code>
+                </pre>
+            </div>
+            <p>You may now execute html2pdf.js commands directly from the console. To capture a default PDF of the entire page, use html2pdf(document.body)</p>
+        </section>
+
+        <!-- Handle Click Outside -->
+        <section>
+            <h1>Handle Click Outside</h1>
+            <div>
+                <pre>
+<code>
+    const onClickOutside = (elementId, callback) => {
+        const element = document.getElementById(elementId);
+
+        document.addEventListener('click', (e) => {
+            if (!element.contains(e.target)) callback();
+        });
+    };
+
+    onClickOutside('red-box', () => console.log('Clicked outside red box'));
+
+    document.addEventListener("DOMContentLoaded", onClickOutside);
+</code>
+                </pre>
+            </div>
+            <p>Will log 'Clicked outside red box' whenever the user clicks outside of #red-box</p>
+        </section>
+
+        <!-- Detect if CapsLock is on -->
+        <section>
+            <h1>Detect if CapsLock is on</h1>
+            <h5>Assume, el is an input element, and msg is a p tag to show message</h5>
+            <div>
+                <pre>
+<code>
+    el.addEventListener('keyup', e => {
+    msg.style = e.getModifierState('CapsLock')
+        ? 'display: block'
+        : 'display: none';
+    });
+</code>
+                </pre>
+            </div>
+        </section>
+
+        <!-- Convert value string to number -->
+        <section>
+            <h1>Convert value string to number</h1>
+            <div>
+                <pre>
+<code>
+    const numInput = document.getElementById('num-input');
+    let num;
+    // Bad: parseFloat() converts the string to a number
+    num = parseFloat(numInput.value);
+    // Good: returns a numeric value
+    num = numInput.valueAsNumber;
+</code>
+                </pre>
+            </div>
+        </section>
+
+        <!-- redirect HTTP protocol to HTTPS protocol -->
+        <section>
+            <h1>Redirect HTTP protocol to HTTPS protocol</h1>
+            <div>
+                <pre>
+<code>
+    const httpsRedirect = () => {
+        if (location.protocol !== 'https:')
+            location.replace('https://' + location.href.split('//')[1]);
+    };
+
+    httpsRedirect();
+</code>
+                </pre>
+            </div>
+            <p>Redirect from http://mydomain.com to https://mydomain.com</p>
+        </section>
+    </main>
+</body>
+
+</html>
