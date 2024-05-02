@@ -87,11 +87,12 @@
 
         <!-- HTML -->
         <section>
+            <h1>In HTML</h1>
             <div>
                 <pre>
 <code>
     < tmpl:/components/heading/table-header title="First Category List" />
-    < table id="tableId" class="display nowrap table table-striped table-bordered" width="100%"> %{--style="width:100%"--}%
+    < table id="tableId" class="display nowrap table table-striped table-bordered" style="width:100%">
         < thead>
             < tr>
                 < th>SL< />
@@ -102,7 +103,6 @@
             < /tr>
         < /thead>
     < /table>
-%{-- < table id="tableId" class="table table-striped table-bordered" style="width:100%"> --}%
 </code>
                 </pre>
             </div>
@@ -140,14 +140,14 @@
             "searching": true, //show/hide search box
             "pagingType": "full_numbers", //numbers | simple | simple_numbers | full | full_numbers | first_last_numbers
             "columns": [
-                {"data": "sl", "name": "sl", "visible": true, "searchable": false, "width": "5%", "orderable": false},
-                {"data": "id", "name": "id", "visible": false, "searchable": false, "width": null, "orderable": false},
-                {"data": "categoryName", "name": "categoryName", "visible": true, "searchable": true, "width": null, "orderable": true },
-                {"data": "description", "name": "description", "visible": true, "searchable": true, "width": null, "orderable": true },
-                {"data": "status", "name": "status", "visible": true, "searchable": true, "width": null, "orderable": true },
-            ],
-            //count index of columns
+                {"data": "< dataFieldName>", "name": "< a given name>", "visible": true | false, "searchable": false | true, "width": "5%" | null | '100px', "orderable": false | true, className: '< name of the class>'},
+            //column index starts from 0 and it consider both visible and hidden columns
             "columnDefs": [
+                //center all columns for both head and body
+                {
+                    targets: '_all',
+                    className: 'dt-center'
+                },
                 {//add onclick event to a column
                     "targets": [0],//sl
                     "render": function (data, type, row, full) {
@@ -163,7 +163,7 @@
                     }
                 },
                 {//change value of a column based on condition
-                    "targets": [4], //status
+                    "targets": [4, 5, 6, 7], //status
                     "className": "activeClass",
                     "render": function (data, type, row) {
                         if (data == '${CommonConstants.DOMAIN_STATUS_ACTIVE}') {
@@ -188,13 +188,13 @@
                     }
                 },
                 {//add onclick event to a column with 2 params
-                        "targets": [5],//proposalNo
-                        "render": function (data, type, row, full) {
-                            return "< a style='text-decoration: underline;' href='javascript:void(0)' onclick='ProcessSearchEditor.showProposal(" + "\"" + row.refProposalId + "\"" + ",\"" + row.refProposalName + "\"" + ")'>" + data + "< /a>"
-                        }
+                    "targets": [5],//proposalNo
+                    "render": function (data, type, row, full) {
+                        return "< a style='text-decoration: underline;' href='javascript:void(0)' onclick='ProcessSearchEditor.showProposal(" + "\"" + row.refProposalId + "\"" + ",\"" + row.refProposalName + "\"" + ")'>" + data + "< /a>"
                     }
+                }
             ],
-            //count index of visible columns
+            //column index starts from 0 and it consider only visible columns
             "createdRow": function (row, data, index) {
                 if (data.status == '${CommonConstants.DOMAIN_STATUS_ACTIVE}') {
                     $('td', row).eq(3).addClass('activeClass');
@@ -302,6 +302,46 @@
     let tableReference = $('#tableId').dataTable();
     oSettings = tableReference.fnSettings();
     tableReference.fnClearTable(this);
+</code>
+                </pre>
+            </div>
+
+            <h5>alignment</h5>
+            <div>
+                <pre>
+<code>
+    "columns": [
+        {"data": "categoryName", "name": "categoryName", "visible": true, "searchable": true, "width": null, "orderable": true, className: 'dt-head-center dt-body-center'}
+
+        {"data": "categoryName", "name": "categoryName", "visible": true, "searchable": true, "width": null, "orderable": true, className: 'dt-head-left'}
+        {"data": "categoryName", "name": "categoryName", "visible": true, "searchable": true, "width": null, "orderable": true, className: 'dt-head-center'}
+        {"data": "categoryName", "name": "categoryName", "visible": true, "searchable": true, "width": null, "orderable": true, className: 'dt-head-right'}
+        {"data": "categoryName", "name": "categoryName", "visible": true, "searchable": true, "width": null, "orderable": true, className: 'dt-head-justify'}
+        {"data": "categoryName", "name": "categoryName", "visible": true, "searchable": true, "width": null, "orderable": true, className: 'dt-head-nowrap'}
+
+        {"data": "categoryName", "name": "categoryName", "visible": true, "searchable": true, "width": null, "orderable": true, className: 'dt-body-left'}
+        {"data": "categoryName", "name": "categoryName", "visible": true, "searchable": true, "width": null, "orderable": true, className: 'dt-body-center'}
+        {"data": "categoryName", "name": "categoryName", "visible": true, "searchable": true, "width": null, "orderable": true, className: 'dt-body-right'}
+        {"data": "categoryName", "name": "categoryName", "visible": true, "searchable": true, "width": null, "orderable": true, className: 'dt-body-justify'}
+        {"data": "categoryName", "name": "categoryName", "visible": true, "searchable": true, "width": null, "orderable": true, className: 'dt-body-nowrap'}
+    ],
+</code>
+                </pre>
+            </div>
+        </section>
+
+        <section>
+            <h1>Available build-in dataTable classes</h1>
+            <div>
+                <pre>
+<code>
+    Class name				Description
+    ----------				-----------
+    dt[-head|-body]-left	Left aligned text
+    dt[-head|-body]-center	Center aligned text
+    dt[-head|-body]-right	Right aligned text
+    dt[-head|-body]-justify	Justify aligned text
+    dt[-head|-body]-nowrap	nowrap aligned text
 </code>
                 </pre>
             </div>
