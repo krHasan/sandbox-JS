@@ -82,6 +82,53 @@
             </div>
         </section>
 
+        <!-- Checkbox -->
+        <section>
+            <h1>Checkbox</h1>
+            <h5>Get checkbox value in jQuery</h5>
+            <div>
+                <pre>
+<code>
+    To check whether it is checked or not, do:
+        if ($('#check_id').is(":checked")) {
+            // it is checked
+        }
+
+    To get the value of the Value attribute you can do something like this:
+        $("input[type='checkbox']").val();
+
+    Or if you have set a class or id for it, you can:
+        $('#check_id').val();
+        $('.check_class').val();
+</code>
+                </pre>
+            </div>
+
+            <h5>check / uncheck checkbox using jquery</h5>
+            <div>
+                <pre>
+                    <code>
+Modern jQuery
+    Use .prop():
+    $('.myCheckbox').prop('checked', true);
+    $('.myCheckbox').prop('checked', false);
+
+DOM API
+    If you're working with just one element, you can always just access the underlying HTMLInputElement and modify its .checked property:
+    $('.myCheckbox')[0].checked = true;
+    $('.myCheckbox')[0].checked = false;
+
+    The benefit to using the .prop() and .attr() methods instead of this is that they will operate on all matched elements.
+
+jQuery 1.5.x and below
+    The .prop() method is not available, so you need to use .attr().
+    $('.myCheckbox').attr('checked', true);
+    $('.myCheckbox').attr('checked', false);
+                    </code>
+                </pre>
+            </div>
+        </section>
+
         <!-- Anonymous Function in jquery  -->
         <section>
             <h1>Anonymous Function in jquery</h1>
