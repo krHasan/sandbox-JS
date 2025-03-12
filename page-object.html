@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS SandBox | Ajax</title>
+    <link rel="icon" type="image/x-icon" href="./title-icon.png">
+    <script src="jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="index.css">
+    <script>
+        const pageName = 'object';
+    </script>
+    <script src="index.js"></script>
+
+</head>
+
+<body class="container mx-auto">
+    <header>
+        <div id="menuContainer"></div>
+    </header>
+
+    <p>JavaScript objects are fundamental to the language, and understanding their methods, properties, and
+        features is crucial for writing clean, efficient, and maintainable code. Below is a comprehensive guide
+        to JavaScript objects, including examples of all methods, properties, and features.
+    </p>
+    <h2>Object Performance Considerations</h2>
+    <ul style="list-style-type:circle">
+        <li style="margin-left: 50px;">Prefer Object.create(null) for pure dictionary objects to avoid prototype
+            pollution.</li>
+        <li style="margin-left: 50px;">Use Map for key-value pairs when keys are dynamic and frequent lookups are
+            needed.</li>
+        <li style="margin-left: 50px;">Use Object.freeze() on constant objects to prevent unintended mutations.</li>
+    </ul>
+    <main class="flex flex-col gap-3 mb-56">
+        <section>
+            <h1>1. Creating a JavaScript Object</h1>
+            <h3>Object Literals (Most Common)</h3>
+            <div>
+                <pre>
+<code>
+    const person = {
+        firstName: "John",
+        lastName: "Doe",
+        age: 30,
+        isEmployed: true,
+        address: {
+            city: "New York",
+            country: "USA"
+        },
+        hobbies: ["reading", "traveling", "sports"],
+        greet: function () {
+            return `Hello, my name is ${this.firstName} ${this.lastName}.`;
+        }
+    };
+</code>
+                </pre>
+            </div>
+
+            <h3>Using Object.create()</h3>
+            <div>
+                <pre>
+<code>
+    const personProto = {
+        greet: function () {
+            return `Hello, my name is ${this.firstName} ${this.lastName}.`;
+        }
+    };
+    
+    const person = Object.create(personProto);
+    person.firstName = "John";
+    person.lastName = "Doe";    
+</code>
+                </pre>
+            </div>
+
+            <h3>Using Constructor Function</h3>
+            <div>
+                <pre>
+<code>
+    function Person(firstName, lastName, age) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+        this.greet = function () {
+            return `Hello, I'm ${this.firstName}.`;
+        };
+    }
+    
+    const person = new Person("John", "Doe", 30);
+    
+</code>
+                </pre>
+            </div>
+
+            <h3>Using ES6 Class</h3>
+            <div>
+                <pre>
+<code>
+    class Person {
+        constructor(firstName, lastName, age) {
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.age = age;
+        }
+    
+        greet() {
+            return `Hello, I'm ${this.firstName}.`;
+        }
+    }
+    
+    const person = new Person("John", "Doe", 30);
+    
+</code>
+                </pre>
+            </div>
+        </section>
+
+        <section>
+            <h1>2. Object Properties and Methods</h1>
+
+            <h2>Accessing Properties</h2>
+            <h3>Dot Notation</h3>
+            <div>
+                <pre>
+<code>
+    console.log(person.name); // "John"
+</code>
+                </pre>
+            </div>
+
+            <h3>Bracket Notation</h3>
+            <div>
+                <pre>
+<code>
+    console.log(person["name"]); // "John"
+</code>
+                </pre>
+            </div>
+
+            <h3>Dynamic Property Access</h3>
+            <div>
+                <pre>
+<code>
+    const key = "name";
+    console.log(person[key]); // "John"
+</code>
+                </pre>
+            </div>
+        </section>
+
+        <section>
+            <h1>3. Adding/Updating Properties</h1>
+            <h3>Add a New Property</h3>
+            <div>
+                <pre>
+<code>
+    person.job = "Developer";
+    console.log(person.job); // "Developer"
+</code>
+                </pre>
+            </div>
+
+            <h3>Update an Existing Property</h3>
+            <div>
+                <pre>
+<code>
+    person.age = 31;
+    person["isEmployed"] = false;
+    
+    console.log(person.age); // 31
+</code>
+                </pre>
+            </div>
+
+            <h3>Deleting Properties</h3>
+            <div>
+                <pre>
+<code>
+    delete person.age;
+    console.log(person.age); // undefined
+</code>
+                </pre>
+            </div>
+
+            <h3>Checking if a Property Exists</h3>
+            <div>
+                <pre>
+<code>
+    console.log("firstName" in person); // true
+    console.log(person.hasOwnProperty("age")); // false (if deleted)    
+</code>
+                </pre>
+            </div>
+        </section>
+
+        <section>
+            <h1>4. Object Methods</h1>
+            <h3>Object.keys(obj) – Get All Keys</h3>
+            <p>Returns an array of an object's keys.</p>
+            <div>
+                <pre>
+<code>
+    console.log(Object.keys(person)); // ["firstName", "lastName", "isEmployed", "address", "hobbies", "greet"]
+</code>
+                </pre>
+            </div>
+
+            <h3>Object.values(obj) – Get All Values</h3>
+            <p>Returns an array of an object's values.</p>
+            <div>
+                <pre>
+<code>
+    console.log(Object.values(person)); // ["John", "Doe", false, { city: "New York", country: "USA" }, ["reading", "traveling", "sports"], function]
+</code>
+                </pre>
+            </div>
+
+            <h3>Object.entries(obj) – Get Key-Value Pairs</h3>
+            <p>Returns an array of key-value pairs.</p>
+            <div>
+                <pre>
+<code>
+    const entries = Object.entries(person);
+    console.log(entries); // [["firstName", "John"], ["lastName", "Doe"], ["isEmployed", false], ...]
+</code>
+                </pre>
+            </div>
+
+            <h3>Object.assign(target, ...sources) – Copy Properties</h3>
+            <p>Copies properties from one or more source objects to a target object.</p>
+            <div>
+                <pre>
+<code>
+    const newPerson = Object.assign({}, person, { job: "Developer" });
+    console.log(newPerson); // { name: "John", age: 30, greet: [Function: greet], job: "Developer" }
+</code>
+                </pre>
+            </div>
+
+            <h3>Object.freeze(obj) – Prevent Modifications</h3>
+            <p>Prevents modifications to an object.</p>
+            <div>
+                <pre>
+<code>
+    Object.freeze(person);
+    person.age = 40; // Fails silently in non-strict mode
+    console.log(person.age); // 30
+</code>
+                </pre>
+            </div>
+
+            <h3>Object.seal(obj) – Prevent Adding/Removing Properties</h3>
+            <p>Prevents adding or deleting properties but allows modifying existing ones.</p>
+            <div>
+                <pre>
+<code>
+    Object.seal(person);
+    person.age = 40; // Works
+    person.job = "Developer"; // Fails
+    console.log(person); // { name: "John", age: 40, greet: [Function: greet] }
+</code>
+                </pre>
+            </div>
+
+            <h3>Object.hasOwnProperty(prop) – Check Property Ownership</h3>
+            <p>Checks if an object has a specific property.</p>
+            <div>
+                <pre>
+<code>
+    console.log(person.hasOwnProperty("name")); // true
+    console.log(person.hasOwnProperty("job")); // false
+</code>
+                </pre>
+            </div>
+
+            <h3>Object.getOwnPropertyNames(obj) – Get All Property Names</h3>
+            <div>
+                <pre>
+<code>
+    console.log(Object.getOwnPropertyNames(person)); 
+</code>
+                </pre>
+            </div>
+
+            <h3>Object.getPrototypeOf(obj) – Get Prototype</h3>
+            <div>
+                <pre>
+<code>
+    console.log(Object.getPrototypeOf(person));
+</code>
+                </pre>
+            </div>
+
+            <h3>Object.defineProperty()</h3>
+            <p>Defines a new property or modifies an existing one.</p>
+            <div>
+                <pre>
+<code>
+    Object.defineProperty(person, "job", {
+        value: "Developer",
+        writable: true,
+        enumerable: true,
+        configurable: true
+      });
+      console.log(person.job); // "Developer"
+</code>
+                </pre>
+            </div>
+        </section>
+
+        <section>
+            <h1>5. Looping Over an Object</h1>
+            <h3>Using for...in</h3>
+            <p>Iterates over enumerable properties.</p>
+            <div>
+                <pre>
+<code>
+    for (const key in person) {
+        console.log(`${key}: ${person[key]}`);
+    }
+</code>
+                </pre>
+            </div>
+
+            <h3>Using Object.keys() + forEach</h3>
+            <div>
+                <pre>
+<code>
+    Object.keys(person).forEach(key => {
+        console.log(`${key}: ${person[key]}`);
+    });
+</code>
+                </pre>
+            </div>
+
+            <h3>Using Object.entries() + forEach</h3>
+            <div>
+                <pre>
+<code>
+    Object.entries(person).forEach(([key, value]) => {
+        console.log(`${key}: ${value}`);
+    });    
+</code>
+                </pre>
+            </div>
+        </section>
+
+        <section>
+            <h1>6. Prototypes and Inheritance</h1>
+            <h3>Prototype Property</h3>
+            <div>
+                <pre>
+<code>
+    function Person(name) {
+        this.name = name;
+    }
+
+    Person.prototype.greet = function() {
+        console.log(`Hello, my name is ${this.name}`);
+    };
+
+    const person = new Person("John");
+    person.greet(); // "Hello, my name is John"
+</code>
+                </pre>
+            </div>
+
+            <h3>Inheritance with Object.create()</h3>
+            <div>
+                <pre>
+<code>
+    const parent = {
+        greet() {
+            console.log(`Hello, my name is ${this.name}`);
+        }
+    };
+
+    const child = Object.create(parent);
+    child.name = "John";
+    child.greet(); // "Hello, my name is John"
+</code>
+                </pre>
+            </div>
+        </section>
+
+        <section>
+            <h1>7. Getters and Setters</h1>
+
+            <h3>Getter</h3>
+            <div>
+                <pre>
+<code>
+    const person = {
+        firstName: "John",
+        lastName: "Doe",
+        get fullName() {
+            return `${this.firstName} ${this.lastName}`;
+        }
+    };
+
+    console.log(person.fullName); // "John Doe"
+</code>
+                </pre>
+            </div>
+
+            <h3>Setter</h3>
+            <div>
+                <pre>
+<code>
+    const person = {
+        firstName: "John",
+        lastName: "Doe",
+        set fullName(name) {
+            [this.firstName, this.lastName] = name.split(" ");
+        }
+    };
+
+    person.fullName = "Jane Smith";
+    console.log(person.firstName); // "Jane"
+    console.log(person.lastName); // "Smith"
+</code>
+                </pre>
+            </div>
+        </section>
+
+        <section>
+            <h1>8. Object Destructuring</h1>
+            <h3>Extract properties into variables.</h3>
+            <div>
+                <pre>
+<code>
+    const { firstName, lastName, address: { city } } = person;
+    console.log(firstName, city); // "John", "New York"    
+</code>
+                </pre>
+            </div>
+        </section>
+
+        <section>
+            <h1>9. Object Spread & Rest Operators</h1>
+
+            <h3>Copy or merge objects.</h3>
+            <div>
+                <pre>
+<code>
+    const person = { name: "John", age: 30 };
+    const details = { job: "Developer", country: "USA" };
+    
+    const merged = { ...person, ...details };
+    console.log(merged); // { name: "John", age: 30, job: "Developer", country: "USA" }
+</code>
+                </pre>
+            </div>
+
+            <h3>Cloning an Object</h3>
+            <div>
+                <pre>
+<code>
+    const newPerson = { ...person };
+</code>
+                </pre>
+            </div>
+
+            <h3>Extracting Remaining Properties</h3>
+            <div>
+                <pre>
+<code>
+    const { firstName, lastName, ...rest } = person;
+    console.log(rest); // Everything except firstName and lastName    
+</code>
+                </pre>
+            </div>
+        </section>
+
+        <section>
+            <h1>10. `this` in Objects</h1>
+            <h3>Refers to the object itself.</h3>
+            <div>
+                <pre>
+<code>
+    const person = {
+        name: "John",
+        greet() {
+            console.log(`Hello, my name is ${this.name}`);
+        }
+    };
+
+    person.greet(); // "Hello, my name is John"
+</code>
+                </pre>
+            </div>
+
+            <h3>Arrow Function & this Issue</h3>
+            <div>
+                <pre>
+<code>
+    const person = {
+        name: "John",
+        greet: () => {
+            return `Hello, I'm ${this.name}`;
+        }
+    };
+    
+    console.log(person.greet()); // "Hello, I'm undefined"    
+</code>
+                </pre>
+            </div>
+        </section>
+
+        <section>
+            <h1>11. JSON Methods</h1>
+
+            <h3>JSON.stringify()</h3>
+            <p>Converts an object to a JSON string.</p>
+            <div>
+                <pre>
+<code>
+    const jsonString = JSON.stringify(person);
+    console.log(jsonString); // '{"name":"John","age":30}'
+</code>
+                </pre>
+            </div>
+
+            <h3>JSON.parse()</h3>
+            <p>Converts a JSON string to an object.</p>
+            <div>
+                <pre>
+<code>
+    const obj = JSON.parse(jsonString);
+    console.log(obj); // { name: "John", age: 30 }
+</code>
+                </pre>
+            </div>
+        </section>
+
+
+        <section>
+            <h1>12. Advanced: Proxies</h1>
+
+            <h3>Intercept and customize object operations.</h3>
+            <div>
+                <pre>
+<code>
+    const handler = {
+        get(target, prop) {
+            return prop in target ? target[prop] : "Property not found";
+        }
+    };
+
+    const proxy = new Proxy(person, handler);
+    console.log(proxy.name); // "John"
+    console.log(proxy.job); // "Property not found"
+</code>
+                </pre>
+            </div>
+        </section>
+    </main>
+</body>
+
+</html>
